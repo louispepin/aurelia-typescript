@@ -8,9 +8,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/jquery": "^3.5.5",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.3",
     "aurelia-store": "^1.6.0",
+    "jquery": "^3.5.1",
     "prettier": "^2.2.1",
     "rxjs": "^6.6.3"
   },
@@ -89,14 +91,6 @@
       "<rootDir>/test/jest-pretest.ts"
     ],
     "testEnvironment": "node",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,ts}",
-      "!**/*.spec.{js,ts}",
-      "!**/node_modules/**",
-      "!**/test/**"
-    ],
-    "coverageDirectory": "<rootDir>/test/coverage-jest",
     "coverageReporters": [
       "json",
       "lcov",

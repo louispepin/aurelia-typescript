@@ -2,6 +2,7 @@ import { inject } from 'aurelia-dependency-injection';
 import { Store } from 'aurelia-store';
 import { User } from 'models/user';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { UserService } from 'services/user.service';
 import { AppState, setUsers } from './state/app.state';
 
@@ -10,7 +11,6 @@ export class App {
   allUsers: User[];
   usersWithHobby: User[];
   
-
   private subscriptions: Subscription[] = [];
 
   constructor(private store: Store<AppState>, private userService: UserService) {
@@ -20,21 +20,19 @@ export class App {
 
   bind() {
     this.subscriptions.push(
-      this.store.state.subscribe((state) => {
+      this.store.state.pipe(filter((state) => !!state)).subscribe((state) => {
         this.allUsers = state.users
       }),
 
-      // TODO: Get users with hobby 'hockey'
-      this.store.state.subscribe((state) => {
-        this.usersWithHobby = state.users.filter(user => user.hobbies.includes('hockey'))
-      }),
+      // TODO: Get users with hobby 'something'?
 
-      // TODO: Use some rxjs operators
+      // TODO: Do some tricky thing with observables?
     );
   }
 
   attached() {
-    this.userService.getUsers();
+    // TODO: Call getUsers() and set the results in the store
+    this.userService.getUsers().then(users => this.store.dispatch('SetUsers', users))
   }
 
   unbind() {
