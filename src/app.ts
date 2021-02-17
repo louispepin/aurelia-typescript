@@ -11,7 +11,7 @@ export class App {
   usersWithHobby: User[];
   
 
-  private subscriptions: Subscription[];
+  private subscriptions: Subscription[] = [];
 
   constructor(private store: Store<AppState>, private userService: UserService) {
     this.store = store;
