@@ -1,8 +1,14 @@
+
 <template>
-  <div repeat.for="user of allUsers" class="user">
+  <require from="app.css"></require>
+  <!-- TODO: display loading message while the app is loading -->
+  <div if.bind="state.loading">
+    Loading...
+  </div>
+
+  <div if.bind="!state.loading" repeat.for="user of state.users" class="user">
     <!-- TODO: list users info -->
     <ul>
-      <li>${user.id}</li>
       <li>${user.name}</li>
       <li>${user.age}</li>
       <li>${user.city}</li>

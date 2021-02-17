@@ -1,17 +1,17 @@
-import { bootstrap } from "aurelia-bootstrapper";
+import { bootstrap } from 'aurelia-bootstrapper';
 import { PLATFORM } from 'aurelia-pal';
-import { StageComponent } from "aurelia-testing";
+import { StageComponent } from 'aurelia-testing';
 import * as $ from 'jquery';
-import { UserService } from "services/user.service";
+import { UserService } from 'services/user.service';
 
 export class MockUserService {
   getUsers() {
     return Promise.resolve([{
       id: 1,
-      name: 'Louis',
-      age: 28,
-      city: 'Montreal',
-      hobbies: ['1', '2', '3']
+      name: 'TestName',
+      age: 999,
+      city: 'TestCity',
+      hobbies: ['Hobby1', 'Hobby2', 'Hobby3']
     }]);
   }
 }
@@ -34,8 +34,15 @@ describe('MyApp', () => {
     it('should render the first user', done => {
       component.create(bootstrap).then(() => {
         const $users = $('.user');
+
         expect($users.length).toEqual(1);
-        expect($users.text()).toContain('Louis');
+
+        expect($users.get(0).textContent).toContain('TestName');
+        expect($users.get(0).textContent).toContain('999');
+        expect($users.get(0).textContent).toContain('TestCity');
+        expect($users.get(0).textContent).toContain('Hobby1');
+        expect($users.get(0).textContent).toContain('Hobby2');
+        expect($users.get(0).textContent).toContain('Hobby3');
   
         done();
       });

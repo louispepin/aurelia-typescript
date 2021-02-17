@@ -1,41 +1,47 @@
 import { inject } from 'aurelia-dependency-injection';
 import { Store } from 'aurelia-store';
-import { User } from 'models/user';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UserService } from 'services/user.service';
-import { AppState, setUsers } from './state/app.state';
+import { AppState, setLoading, setUsers } from './state/app.state';
 
 @inject(Store, UserService)
 export class App {
-  allUsers: User[];
-  usersWithHobby: User[];
+  state: AppState;
   
   private subscriptions: Subscription[] = [];
 
   constructor(private store: Store<AppState>, private userService: UserService) {
     this.store = store;
     this.store.registerAction('SetUsers', setUsers);
+    this.store.registerAction('SetLoading', setLoading);
   }
 
   bind() {
     this.subscriptions.push(
       this.store.state.pipe(filter((state) => !!state)).subscribe((state) => {
-        this.allUsers = state.users
+        this.state = state
       }),
 
-      // TODO: Get users with hobby 'something'?
+      // TODO: Use javascript array functions to map/filter/sort data?
 
       // TODO: Do some tricky thing with observables?
     );
   }
 
   attached() {
-    // TODO: Call getUsers() and set the results in the store
-    this.userService.getUsers().then(users => this.store.dispatch('SetUsers', users))
+    this.getUsers();
   }
 
   unbind() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  // TODO: Implement getUsers() which calls the service and sets users in the store
+  private async getUsers() {
+    this.store.dispatch('SetLoading', true);
+    const users = await this.userService.getUsers();
+    this.store.dispatch('SetUsers', users);
+    this.store.dispatch('SetLoading', false);
   }
 }
