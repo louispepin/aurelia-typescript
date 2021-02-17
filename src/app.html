@@ -1,0 +1,11 @@
+<template>
+  <div repeat.for="user of state.users">
+    <ul>
+      <li>${user.id}</li>
+      <li>${user.name}</li>
+      <li>${user.age}</li>
+      <li>${user.city}</li>
+      <li>${user.hobbies}</li>
+    </ul>
+  </div>
+</template>
